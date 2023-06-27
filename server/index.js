@@ -3,15 +3,16 @@ const app = express();
 const ExerciseModel = require("./model/Exercise.js");
 const mong = require("mongoose");
 const cors = require("cors");
-
+require("./.ENV");
 app.use(express.json());
 app.use(cors());
 
-mong.connect("mongodb+srv://victorioandre78:Ju57dr3_200o@cluster0.66wb2bc.mongodb.net/exerice-tracker");
+mong.connect(MONG_CONNECT);
 
 app.get("/getExercises", (req, res)=>{
   ExerciseModel.find({}).then((exercise)=>{
     res.json(exercise);
+    json(req);
   }).catch((err)=>{
     res.json(err);
   }) 
@@ -30,3 +31,5 @@ app.post("/createExercise",async (req, res)=>{
 app.listen(3001, ()=>{
   console.log("SERVER IS OPEN!");
 });
+
+
