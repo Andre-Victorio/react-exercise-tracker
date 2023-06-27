@@ -11,6 +11,7 @@ function App(){
   useEffect(()=>{
   Axios.get("http://localhost:3001/getExercises").then((response)=>{
     setExerciseList(response.data);
+    console.log(response.data);
   });
   },[]);                                                        
   const createExercise = ()=>{
@@ -22,10 +23,14 @@ function App(){
   const exitModal = () =>{
     if(modal!=null){
       modal.close();
-      console.log("I still work!");  
     }
-    
-  } 
+  }
+  const deleteExercise = (id:string) =>{
+    Axios.post("http://localhost:3001/deleteExercise",{_id:id}).then((res)=>{
+      JSON.stringify(res.data);
+      setExerciseList(exerciseList.splice(exerciseList.indexOf(id)));
+    });
+  }
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
   return(
     <>
@@ -46,19 +51,27 @@ function App(){
           <input type="number" placeholder="Set..." onChange={(event)=>{setExerciseSet(event.target.value as unknown as number);}} required/>
           <input type="number" placeholder="Reps..." onChange={(event)=>{setExerciseReps(event.target.value as unknown as number);}} required/>
           <button  name="Close" onClick={exitModal}>Close</button>
-          <CreateButton name="Add Entry" onClick={(createExercise)}/>
+          <CreateButton name="Add Entry" onClick={createExercise}/>
         </form> 
         </dialog>
       </div>
     </div>
     <div className="exerciseList">
-      {exerciseList.map((exercise)=>{
-        return(
+      {
+        exerciseList.map((exercise,)=>{
+          
+          return(
+            <>
           <div key={exercise._id}>
           <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
-          </div> 
+          <CreateButton name="&#10006;" onClick={()=>{
+            deleteExercise(exercise._id);
+          }} />
+          </div>
+          </>
         ); 
-      })}
+      })
+        }
     </div>
     </>
   );

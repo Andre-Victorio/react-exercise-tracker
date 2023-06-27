@@ -9,12 +9,11 @@ app.use(cors());
 
 mong.connect(MONG_CONNECT);
 
-app.get("/getExercises", (req, res)=>{
-  ExerciseModel.find({}).then((exercise)=>{
+app.get("/getExercises", async(req, res)=>{
+  await ExerciseModel.find({}).then((exercise)=>{
     res.json(exercise);
-    json(req);
   }).catch((err)=>{
-    res.json(err);
+    res.json(err + "retrieve Error");
   }) 
 });
 
@@ -22,9 +21,21 @@ app.post("/createExercise",async (req, res)=>{
   const exercise = req.body;
   const newExercise = new ExerciseModel(exercise);
   await newExercise.save().catch((err)=>{
-    console.log(err)
+    console.log(err + "create Error");
   });
-   res.json(exercise);
+  res.json(exercise);
+})
+
+app.post("/deleteExercise",(req, res)=>{
+  const toDel = req.body;
+  if(ExerciseModel.find({"_id":toDel._id})){
+    ExerciseModel.deleteOne({"_id":toDel._id}).maxTimeMS(10).then(()=>{
+      res.json(toDel);
+      return;
+    }).catch((err)=>{
+      console.log(err);
+    });
+  }
 })
 
 
