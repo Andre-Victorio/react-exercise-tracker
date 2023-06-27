@@ -1,0 +1,62 @@
+#root{
+  font-family: 'Lato', sans-serif;
+}
+body{
+  background-color:#d07cd0;
+}
+
+.appBody{
+  display:flex;
+  justify-content:center;
+  width:50%;
+  margin-left:50vh;
+  margin-right:50vh;
+  margin-bottom:15px;
+}
+
+.exerciseHeader{
+  background-color:#b68fd6;
+  color:#ffddcc;
+  display:grid;
+  border-radius:20px;
+  border:20px;
+  border-color:#6b3696;
+  padding:5px;
+}
+.exerciseList{
+  display:flex;
+  justify-content:center;
+  width:50%;
+  flex-wrap: wrap; 
+  padding:10px;
+  margin-left:50vh;
+  margin-right:50vh;
+  background:plum;
+}
+
+.data-modal{
+  background-color:plum;
+  border-radius:12px;
+  border-color:violet;
+  flex-wrap:wrap;
+  justify-content:center;
+  width:50%;
+  margin-left:50vh;
+  margin-right:50vh;
+  margin-bottom:15px;
+}
+
+.modalBody{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap; 
+}
+
+.modalBody input{
+  margin:2px;
+  border-radius:10px;
+  outline-color:khaki;
+  
+}
+
+
