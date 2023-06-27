@@ -3,11 +3,11 @@ const app = express();
 const ExerciseModel = require("./model/Exercise.js");
 const mong = require("mongoose");
 const cors = require("cors");
-require("./.env");
+
 app.use(express.json());
 app.use(cors());
 
-mong.connect(MONG_CONNECT);
+mong.connect("mongodb+srv://victorioandre78:Ju57dr3_200o@cluster0.66wb2bc.mongodb.net/exerice-tracker");
 
 app.get("/getExercises", (req, res)=>{
   ExerciseModel.find({}).then((exercise)=>{
