@@ -11,13 +11,10 @@ function App(){
   useEffect(()=>{
   Axios.get("http://localhost:3001/getExercises").then((response)=>{
     setExerciseList(response.data);
-    console.log(response.data);
   });
   },[]);                                                        
   const createExercise = ()=>{
      Axios.post("http://localhost:3001/createExercise",{name: exerciseName, set: exerciseSet, reps:exerciseReps, date:new Date()}).then((res)=>{
-      //alert("hatdog");
-      JSON.stringify(res.data);
     })
   }        
   const exitModal = () =>{
@@ -27,8 +24,7 @@ function App(){
   }
   const deleteExercise = (id:string) =>{
     Axios.post("http://localhost:3001/deleteExercise",{_id:id}).then((res)=>{
-      JSON.stringify(res.data);
-      setExerciseList(exerciseList.splice(exerciseList.indexOf(id)));
+      setExerciseList(exerciseList.filter((exercise)=>{return exercise._id !== id}));
     });
   }
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
@@ -46,10 +42,10 @@ function App(){
           <p>Exercise:
               <input type="text" placeholder="Exercise..." onChange={(event)=>{
                 setExerciseName(event.target.value);
-            }} required/>
+            }}/>
           </p>
-          <input type="number" placeholder="Set..." onChange={(event)=>{setExerciseSet(event.target.value as unknown as number);}} required/>
-          <input type="number" placeholder="Reps..." onChange={(event)=>{setExerciseReps(event.target.value as unknown as number);}} required/>
+          <input type="number" placeholder="Set..." onChange={(event)=>{setExerciseSet(event.target.value as unknown as number);}}/>
+          <input type="number" placeholder="Reps..." onChange={(event)=>{setExerciseReps(event.target.value as unknown as number);}}/>
           <button  name="Close" onClick={exitModal}>Close</button>
           <CreateButton name="Add Entry" onClick={createExercise}/>
         </form> 
@@ -58,17 +54,14 @@ function App(){
     </div>
     <div className="exerciseList">
       {
-        exerciseList.map((exercise,)=>{
-          
+        exerciseList.map((exercise)=>{
           return(
-            <>
           <div key={exercise._id}>
           <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
           <CreateButton name="&#10006;" onClick={()=>{
             deleteExercise(exercise._id);
           }} />
           </div>
-          </>
         ); 
       })
         }
