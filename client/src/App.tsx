@@ -19,7 +19,7 @@ function App(){
 
   const createExercise = ()=>{
     console.log(inputName.current.toString());
-    Axios.post("http://localhost:3001/createExercise",{name: inputName.current.toString(), set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
+    Axios.post("http://localhost:3001/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
     })
   }        
   const textToRef = (text:string, ref:any) =>{
@@ -89,7 +89,7 @@ function App(){
     <div className="appBody">
       <div className="exerciseHeader" >
       <h1>Exercise Tracker</h1>
-      <CreateButton  name="Create an Exercise" onClick={()=>{
+      <CreateButton borderRadius="30px" backgroundColor="plum" fontColor="#6b3696" name="Create an Exercise" onClick={()=>{
           if(modal!=null){
             modal.show();
         }}}/>
@@ -133,11 +133,11 @@ function App(){
       {
         exerciseList.map((exercise)=>{
           return(
-          <div key={exercise._id}>
-          <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
-          <CreateButton name="&#10006;" onClick={()=>{
+          <div key={exercise._id} className="exerciseDiv">
+          <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
             deleteExercise(exercise._id);
           }} />
+          <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
           </div>
         ); 
       })

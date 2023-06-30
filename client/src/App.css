@@ -16,13 +16,13 @@ body{
 
 .exerciseHeader{
   background-color:#b68fd6;
-  color:#ffddcc;
+  color:#6b3696;
   display:grid;
   justify-content:center;
   border-radius:20px;
-  border:20px;
+  border:2px solid;
   border-color:#6b3696;
-  padding:5px;
+  padding:10px;
 }
 .exerciseList{
   display:flex;
@@ -33,12 +33,14 @@ body{
   margin-left:50vh;
   margin-right:50vh;
   background:plum;
+  border-radius:15px;
+  border:solid #956eb5;
 }
 
 .data-modal{
-  background-color:plum;
+  background-color:#b68fd6;
   border-radius:12px;
-  border-color:violet;
+  border-color:#956eb5;
   margin-left:auto;
   margin-right:auto;
   flex-wrap:wrap;
@@ -54,13 +56,16 @@ body{
 
 .modalBody p{
   display:inline-flexbox;
+  color:#6b3696;
+  font-weight: bold;
 }
 .modalBody input{
-  margin-top:10px;
+  margin-top:5px;
   margin-bottom:0px;
   padding-bottom:0px;
   border-radius:10px;
-  outline-color:khaki;
+  border:2px solid #6b3696;
+  outline-color:#6b3696;
   display:block;
   text-align: justify;
 }
@@ -71,4 +76,12 @@ body{
   font-size:16px;
 }
 
-
+.exerciseDiv{
+  background-color:#caa7f2;
+  margin-right:20px;
+  margin-bottom:10px;
+  padding:15px;
+  border-radius:10px;
+  background-color:#b68fd6;
+  border: 2px solid #956eb5;
+}
