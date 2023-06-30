@@ -89,7 +89,7 @@ function App(){
     <div className="appBody">
       <div className="exerciseHeader" >
       <h1>Exercise Tracker</h1>
-      <CreateButton borderRadius="30px" backgroundColor="plum" fontColor="#6b3696" name="Create an Exercise" onClick={()=>{
+      <CreateButton borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="Create an Exercise" onClick={()=>{
           if(modal!=null){
             modal.show();
         }}}/>
@@ -121,9 +121,11 @@ function App(){
               <input style={{borderColor:"black"}} type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
               </>}
             </p>
-            <footer>
-              <CreateButton name="&#10006;" onClick={exitModal}/>
-              <CreateButton name="Add Entry" onClick={validateForm}/>
+            <footer className="exitModalFooter">
+              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="left" name="Cancel" onClick={exitModal}/>
+            </footer>
+            <footer className="addEntryFooter">
+              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="right" name="Add Entry" onClick={validateForm}/>
             </footer>
           </article>
         </form> 
