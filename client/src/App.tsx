@@ -8,9 +8,9 @@ function App(){
   const [nameError, setNameError] = useState<boolean>();
   const [setError, setSetError] = useState<boolean>();
   const [repsError, setRepsError] = useState<boolean>();
-  const inputName = useRef("");
-  const inputSet = useRef();
-  const inputReps = useRef();
+  const inputName = useRef<string>("");
+  const inputSet = useRef<number>();
+  const inputReps = useRef<number>();
   useEffect(()=>{
   Axios.get("http://localhost:3001/getExercises").then((response)=>{
     setExerciseList(response.data);
@@ -18,11 +18,12 @@ function App(){
   },[]);                                                        
 
   const createExercise = ()=>{
-     Axios.post("http://localhost:3001/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputName.current as unknown as number, date:new Date()}).then((res)=>{
+    console.log(inputName.current.toString());
+    Axios.post("http://localhost:3001/createExercise",{name: inputName.current.toString(), set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
     })
   }        
   const textToRef = (text:string, ref:any) =>{
-    ref.current =+ text;
+    ref.current = text;
   }
   const exitModal = () =>{
     if(modal!=null){
@@ -80,7 +81,6 @@ function App(){
       createExercise();
     }else{
       event?.preventDefault();
-      alert("There are form errors, please check if they're correct.");
     }
   }
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
@@ -93,20 +93,33 @@ function App(){
           if(modal!=null){
             modal.show();
         }}}/>
+      </div>
       <dialog  data-modal className="data-modal">
         <form className="modalBody">
           <article>  
             <p>Exercise:
-                  <input type="text" placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
-                  {(nameError)?<span className="error-valid">Name is not valid, please try again</span>:<></>}
+              {(nameError)?<>
+              <input type="text" style={{borderColor:"red"}} placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
+              <span className="error-valid">Name is not valid, please try again</span>
+              </>:<>
+              <input type="text" style={{borderColor:"black"}} placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
+              </>}
             </p>
             <p>Sets:
-                <input type="number" placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
-                  {(setError)?<span className="error-valid">Set number is not valid, please try again</span>:<></>}
+            {(setError)?<>
+              <input type="number" style={{borderColor:"red"}} placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
+              <span className="error-valid">Number is not valid, please try again</span>
+              </>:<>
+              <input type="number" style={{borderColor:"black"}} placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
+            </>}
             </p>
             <p>Reps:
-            <input type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
-                  {(repsError)?<span className="error-valid">Rep number is not valid, please try again</span>:<></>}
+              {(repsError)?<>
+              <input style={{borderColor:"red"}} type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
+              <span className="error-valid">Number is not valid, please try again</span>
+              </>:<>
+              <input style={{borderColor:"black"}} type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
+              </>}
             </p>
             <footer>
               <CreateButton name="&#10006;" onClick={exitModal}/>
@@ -115,7 +128,6 @@ function App(){
           </article>
         </form> 
         </dialog>
-      </div>
     </div>
     <div className="exerciseList">
       {

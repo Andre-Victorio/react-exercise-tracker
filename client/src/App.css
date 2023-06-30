@@ -9,8 +9,8 @@ body{
   display:flex;
   justify-content:center;
   width:50%;
-  margin-left:50vh;
-  margin-right:50vh;
+  margin-left:auto;
+  margin-right:auto;
   margin-bottom:15px;
 }
 
@@ -18,6 +18,7 @@ body{
   background-color:#b68fd6;
   color:#ffddcc;
   display:grid;
+  justify-content:center;
   border-radius:20px;
   border:20px;
   border-color:#6b3696;
@@ -38,25 +39,36 @@ body{
   background-color:plum;
   border-radius:12px;
   border-color:violet;
+  margin-left:auto;
+  margin-right:auto;
   flex-wrap:wrap;
   justify-content:center;
-  width:50%;
-  margin-left:50vh;
-  margin-right:50vh;
-  margin-bottom:15px;
+  max-width: fit-content;
 }
 
 .modalBody{
   display:flex;
   justify-content:center;
-  flex-wrap:wrap; 
+  /* flex-wrap:wrap; */
 }
 
+.modalBody p{
+  display:inline-flexbox;
+}
 .modalBody input{
-  margin:2px;
+  margin-top:10px;
+  margin-bottom:0px;
+  padding-bottom:0px;
   border-radius:10px;
   outline-color:khaki;
-  
+  display:block;
+  text-align: justify;
+}
+.error-valid{
+  display:inline-block;
+  color:red;
+  text-align:left;
+  font-size:16px;
 }
 
 

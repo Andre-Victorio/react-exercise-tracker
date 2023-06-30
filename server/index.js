@@ -23,7 +23,6 @@ app.post("/createExercise",async (req, res)=>{
   await newExercise.save().catch((err)=>{
     console.log(err + "create Error");
   });
-  res.json(exercise);
 })
 
 app.post("/deleteExercise",(req, res)=>{
