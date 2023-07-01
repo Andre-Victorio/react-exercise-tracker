@@ -9,9 +9,11 @@ function App(){
   const [setError, setSetError] = useState<boolean>();
   const [repsError, setRepsError] = useState<boolean>();
   const [visibleModal, setVisibleModal] = useState<string>();
+  const [dateSelect, setDateSelect] = useState<Date>();
   const inputName = useRef<string>("");
   const inputSet = useRef<number>();
   const inputReps = useRef<number>();
+
   useEffect(()=>{
   Axios.get("http://localhost:3001/getExercises").then((response)=>{
     setExerciseList(response.data);
@@ -19,7 +21,6 @@ function App(){
   },[]);                                                        
 
   const createExercise = ()=>{
-    console.log(inputName.current.toString());
     Axios.post("http://localhost:3001/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
     })
   }        
@@ -41,7 +42,15 @@ function App(){
       setExerciseList(exerciseList.filter((exercise)=>{return exercise._id !== id}));
     });
   }
-
+  const getExerciseOnDate = (date:Date) =>{
+  console.log(dateSelect)
+    Axios.post("http://localhost:3001/getExercisesOnDate",{date:date}).then((res)=>{
+      setExerciseList(res.data);
+      console.log(res.data);
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
   const validateName = () =>{
     return (inputName.current.length != 0)? true:  false;
   }
@@ -96,7 +105,10 @@ function App(){
               modal.showModal();
                 setVisibleModal("flex");
           }}}/>
-        <input type="date" className="dateSelector"/>
+        <div className="dateSelectorDiv">
+          <input type="date" className="dateSelector" onChange={(e)=>{setDateSelect(e.target.value as unknown as Date)} }/>
+          <CreateButton name="select" onClick={()=>{getExerciseOnDate(dateSelect as unknown as Date)}} borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5"/>
+        </div>
       </div>
     </div>
     <div className="modalDiv">

@@ -10,7 +10,26 @@ app.use(cors());
 mong.connect(MONG_CONNECT);
 
 app.get("/getExercises", async(req, res)=>{
-  await ExerciseModel.find({}).then((exercise)=>{
+  await ExerciseModel.find().then((exercise)=>{
+    res.json(exercise);
+    console.log(exercise[0].date);
+  }).catch((err)=>{
+    res.json(err + "retrieve Error");
+  }) 
+});
+
+app.post("/getExercisesOnDate", async(req, res)=>{
+  const date = req.body;
+  // console.log(date.date);
+  // console.log(new Date(date.date));
+  let today = new Date(date.date);
+  let toDate = new Date(date.date);
+  let tomDate = new Date(toDate.setDate(toDate.getDate() + 1));
+  await ExerciseModel.find({"date":
+    {$gt: today,
+    $lt:tomDate}}
+  ).then((exercise)=>{
+    // console.log(exercise);
     res.json(exercise);
   }).catch((err)=>{
     res.json(err + "retrieve Error");
