@@ -8,6 +8,7 @@ function App(){
   const [nameError, setNameError] = useState<boolean>();
   const [setError, setSetError] = useState<boolean>();
   const [repsError, setRepsError] = useState<boolean>();
+  const [visibleModal, setVisibleModal] = useState<string>();
   const inputName = useRef<string>("");
   const inputSet = useRef<number>();
   const inputReps = useRef<number>();
@@ -29,6 +30,7 @@ function App(){
     if(modal!=null){
       event?.preventDefault();
       modal.close();
+      setVisibleModal("none");
       setNameError(false);
       setSetError(false);
       setRepsError(false);
@@ -91,10 +93,13 @@ function App(){
       <h1>Exercise Tracker</h1>
       <CreateButton borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="Create an Exercise" onClick={()=>{
           if(modal!=null){
-            modal.show();
+            modal.showModal();
+              setVisibleModal("flex");
         }}}/>
       </div>
-      <dialog  data-modal className="data-modal">
+    </div>
+    <div className="modalDiv">
+      <dialog  data-modal className="data-modal" style={{display:visibleModal}}>
         <form className="modalBody">
           <article>  
             <p>Exercise:
@@ -129,21 +134,23 @@ function App(){
             </footer>
           </article>
         </form> 
-        </dialog>
+      </dialog>
     </div>
-    <div className="exerciseList">
-      {
-        exerciseList.map((exercise)=>{
-          return(
-          <div key={exercise._id} className="exerciseDiv">
-          <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
-            deleteExercise(exercise._id);
-          }} />
-          <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
-          </div>
-        ); 
-      })
-        }
+    <div className="exerciseContainer">
+      <div className="exerciseList">
+        {
+          exerciseList.map((exercise)=>{
+            return(
+            <div key={exercise._id} className="exerciseDiv">
+            <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
+              deleteExercise(exercise._id);
+            }} />
+            <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
+            </div>
+          ); 
+        })
+          }
+      </div>
     </div>
     </>
   );

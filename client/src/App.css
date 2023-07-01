@@ -3,11 +3,15 @@
 }
 body{
   background-color:#d07cd0;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .appBody{
   display:flex;
   justify-content:center;
+  align-items:center;
   width:50%;
   margin-left:auto;
   margin-right:auto;
@@ -24,19 +28,7 @@ body{
   border-color:#6b3696;
   padding:10px;
 }
-.exerciseList{
-  display:flex;
-  justify-content:center;
-  width:50%;
-  flex-wrap: wrap; 
-  padding:10px;
-  margin-left:50vh;
-  margin-right:50vh;
-  background:plum;
-  border-radius:15px;
-  border:solid #956eb5;
-}
-
+/* Modal Create Exercise Input*/
 .data-modal{
   background-color:#b68fd6;
   border-radius:12px;
@@ -46,6 +38,7 @@ body{
   flex-wrap:wrap;
   justify-content:center;
   max-width: fit-content;
+  align-items:cetner
 }
 
 .modalBody{
@@ -77,6 +70,19 @@ body{
   font-size:16px;
 }
 
+.modalDiv{
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  position:sticky;
+  top:50vh;
+}
+/*Exercise Container and its children*/
+.exerciseContainer{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 .exerciseDiv{
   background-color:#caa7f2;
   margin-right:20px;
@@ -85,4 +91,17 @@ body{
   border-radius:10px;
   background-color:#b68fd6;
   border: 2px solid #956eb5;
+}
+
+.exerciseList{
+  display:flex;
+  justify-content:center;
+  width:50%;
+  flex-wrap: wrap; 
+  padding:10px;
+  margin-left:50vh;
+  margin-right:50vh;
+  background:plum;
+  border-radius:15px;
+  border:solid #956eb5;
 }
