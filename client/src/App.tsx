@@ -88,14 +88,15 @@ function App(){
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
   return(
   <>
-    <div className="appBody">
+    <div className="appHeader">
       <div className="exerciseHeader" >
-      <h1>Exercise Tracker</h1>
-      <CreateButton borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="Create an Exercise" onClick={()=>{
-          if(modal!=null){
-            modal.showModal();
-              setVisibleModal("flex");
-        }}}/>
+        <h1>Exercise Tracker</h1>
+        <CreateButton borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="Create an Exercise" onClick={()=>{
+            if(modal!=null){
+              modal.showModal();
+                setVisibleModal("flex");
+          }}}/>
+        <input type="date" className="dateSelector"/>
       </div>
     </div>
     <div className="modalDiv">
@@ -107,7 +108,7 @@ function App(){
               <input type="text" style={{borderColor:"red"}} placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
               <span className="error-valid">Name is not valid, please try again</span>
               </>:<>
-              <input type="text" style={{borderColor:"black"}} placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
+              <input type="text" style={{borderColor:"#6b3696"}} placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
               </>}
             </p>
             <p>Sets:
@@ -115,7 +116,7 @@ function App(){
               <input type="number" style={{borderColor:"red"}} placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
               <span className="error-valid">Number is not valid, please try again</span>
               </>:<>
-              <input type="number" style={{borderColor:"black"}} placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
+              <input type="number" style={{borderColor:"#6b3696"}} placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
             </>}
             </p>
             <p>Reps:
@@ -123,7 +124,7 @@ function App(){
               <input style={{borderColor:"red"}} type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
               <span className="error-valid">Number is not valid, please try again</span>
               </>:<>
-              <input style={{borderColor:"black"}} type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
+              <input style={{borderColor:"#6b3696"}} type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
               </>}
             </p>
             <footer className="exitModalFooter">
