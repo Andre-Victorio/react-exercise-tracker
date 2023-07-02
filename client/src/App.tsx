@@ -43,10 +43,15 @@ function App(){
     });
   }
   const getExerciseOnDate = (date:Date) =>{
-  console.log(dateSelect)
     Axios.post("http://localhost:3001/getExercisesOnDate",{date:date}).then((res)=>{
-      setExerciseList(res.data);
       console.log(res.data);
+      if(res.data.length==0){
+          Axios.get("http://localhost:3001/getExercises").then((response)=>{
+            setExerciseList(response.data);
+        });
+      }else{
+        setExerciseList(res.data);
+      }
     }).catch((err)=>{
       console.log(err);
     })

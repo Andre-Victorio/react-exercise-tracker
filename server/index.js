@@ -9,10 +9,9 @@ app.use(cors());
 
 mong.connect(MONG_CONNECT);
 
-app.get("/getExercises", async(req, res)=>{
-  await ExerciseModel.find().then((exercise)=>{
+app.get("/getExercises", (req, res)=>{
+   ExerciseModel.find().then((exercise)=>{
     res.json(exercise);
-    console.log(exercise[0].date);
   }).catch((err)=>{
     res.json(err + "retrieve Error");
   }) 
@@ -30,6 +29,7 @@ app.post("/getExercisesOnDate", async(req, res)=>{
     $lt:tomDate}}
   ).then((exercise)=>{
     // console.log(exercise);
+    (exercise.length > 1)?console.log("hello"):console.log("world");
     res.json(exercise);
   }).catch((err)=>{
     res.json(err + "retrieve Error");
