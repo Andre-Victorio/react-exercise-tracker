@@ -117,3 +117,13 @@ body{
   border-radius:15px;
   border:solid #956eb5;
 }
+
+.exerciseContainer{
+  display:flex;
+  position:static;
+  top: 0px;
+}
+.noExerciseTodayModal{
+
+  opacity: 1;
+}

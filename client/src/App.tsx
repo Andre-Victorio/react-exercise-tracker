@@ -46,9 +46,14 @@ function App(){
     Axios.post("http://localhost:3001/getExercisesOnDate",{date:date}).then((res)=>{
       console.log(res.data);
       if(res.data.length==0){
-          Axios.get("http://localhost:3001/getExercises").then((response)=>{
+        // event?.preventDefault();
+        noExerToday.show();
+        noExerToday.style.opacity = 1 as unknown as string;
+        Axios.get("http://localhost:3001/getExercises").then((response)=>{
             setExerciseList(response.data);
         });
+        // const closeTimeout = setTimeout(noExerClose, 1000);
+        noExerClose();
       }else{
         setExerciseList(res.data);
       }
@@ -100,6 +105,30 @@ function App(){
     }
   }
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
+  const noExerToday = document.querySelector(".noExerciseTodayModal") as HTMLDialogElement;
+
+  const noExerClose = () =>{
+    // event?.preventDefault();
+
+    console.log(noExerToday.style.opacity);
+    setTimeout(()=>{
+      const fadeInterval = setInterval(()=>{
+        let opacity = parseFloat(noExerToday.style.opacity);
+        if(opacity > 0){
+          opacity -= 0.1;
+          noExerToday.style.opacity = opacity.toString();
+        }else{
+            clearInterval(fadeInterval);
+          }
+        }
+    , 50);
+      setTimeout(()=>{clearInterval(fadeInterval);}, 1000);
+    },5000);
+    if(noExerToday.style.opacity as unknown as number == 0){
+      noExerToday.close();
+    }
+  }
+
   return(
   <>
     <div className="appHeader">
@@ -153,6 +182,11 @@ function App(){
           </article>
         </form> 
       </dialog>
+      <div className="noExerModalContainer">
+        <dialog className="noExerciseTodayModal" style={{opacity:"1"}}>
+            <p>There is no exercise in {dateSelect as unknown as string}</p>
+        </dialog>
+      </div>
     </div>
     <div className="exerciseContainer">
       <div className="exerciseList">
