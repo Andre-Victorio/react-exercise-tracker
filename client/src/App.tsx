@@ -10,6 +10,7 @@ function App(){
   const [repsError, setRepsError] = useState<boolean>();
   const [visibleModal, setVisibleModal] = useState<string>();
   const [dateSelect, setDateSelect] = useState<Date>();
+  const [messageModal, setMessageModal] = useState<string>();
   const inputName = useRef<string>("");
   const inputSet = useRef<number>();
   const inputReps = useRef<number>();
@@ -42,24 +43,33 @@ function App(){
       setExerciseList(exerciseList.filter((exercise)=>{return exercise._id !== id}));
     });
   }
+
   const getExerciseOnDate = (date:Date) =>{
-    Axios.post("http://localhost:3001/getExercisesOnDate",{date:date}).then((res)=>{
-      console.log(res.data);
-      if(res.data.length==0){
-        // event?.preventDefault();
-        noExerToday.show();
-        noExerToday.style.opacity = 1 as unknown as string;
-        Axios.get("http://localhost:3001/getExercises").then((response)=>{
-            setExerciseList(response.data);
-        });
-        // const closeTimeout = setTimeout(noExerClose, 1000);
-        noExerClose();
-      }else{
-        setExerciseList(res.data);
-      }
-    }).catch((err)=>{
-      console.log(err);
-    })
+    if(date != undefined){
+      Axios.post("http://localhost:3001/getExercisesOnDate",{date:date}).then((res)=>{
+        if(res.data.length==0){
+          setMessageModal("There is no exercise in " + dateSelect); 
+          noExerToday.show();
+          noExerToday.style.opacity = 1 as unknown as string;
+          Axios.get("http://localhost:3001/getExercises").then((response)=>{
+              setExerciseList(response.data);
+          });
+          noExerClose();
+        }else{
+          setExerciseList(res.data);
+        }
+      }).catch((err)=>{
+        console.log(err);
+      })
+    }else{
+      setMessageModal("Date is undefined, please try again"); 
+      noExerToday.show();
+      noExerToday.style.opacity = 1 as unknown as string;
+      Axios.get("http://localhost:3001/getExercises").then((response)=>{
+        setExerciseList(response.data);
+      });
+      noExerClose();
+    }
   }
   const validateName = () =>{
     return (inputName.current.length != 0)? true:  false;
@@ -101,16 +111,13 @@ function App(){
     if (errorCount < 1){
       createExercise();
     }else{
-      event?.preventDefault();
+     event?.preventDefault();
     }
   }
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
   const noExerToday = document.querySelector(".noExerciseTodayModal") as HTMLDialogElement;
 
   const noExerClose = () =>{
-    // event?.preventDefault();
-
-    console.log(noExerToday.style.opacity);
     setTimeout(()=>{
       const fadeInterval = setInterval(()=>{
         let opacity = parseFloat(noExerToday.style.opacity);
@@ -184,7 +191,7 @@ function App(){
       </dialog>
       <div className="noExerModalContainer">
         <dialog className="noExerciseTodayModal" style={{opacity:"1"}}>
-            <p>There is no exercise in {dateSelect as unknown as string}</p>
+            <p>{messageModal}</p>
         </dialog>
       </div>
     </div>

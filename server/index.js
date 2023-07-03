@@ -19,8 +19,6 @@ app.get("/getExercises", (req, res)=>{
 
 app.post("/getExercisesOnDate", async(req, res)=>{
   const date = req.body;
-  // console.log(date.date);
-  // console.log(new Date(date.date));
   let today = new Date(date.date);
   let toDate = new Date(date.date);
   let tomDate = new Date(toDate.setDate(toDate.getDate() + 1));
@@ -28,8 +26,6 @@ app.post("/getExercisesOnDate", async(req, res)=>{
     {$gt: today,
     $lt:tomDate}}
   ).then((exercise)=>{
-    // console.log(exercise);
-    (exercise.length > 1)?console.log("hello"):console.log("world");
     res.json(exercise);
   }).catch((err)=>{
     res.json(err + "retrieve Error");
