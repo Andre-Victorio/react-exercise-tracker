@@ -130,7 +130,7 @@ function App(){
         }
     , 50);
       setTimeout(()=>{clearInterval(fadeInterval);}, 1000);
-    },5000);
+    },1000);
     if(noExerToday.style.opacity as unknown as number == 0){
       noExerToday.close();
     }
