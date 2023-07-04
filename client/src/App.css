@@ -3,26 +3,108 @@
 }
 body{
   background-color:#d07cd0;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.appBody{
+.appHeader{
   display:flex;
   justify-content:center;
+  align-items:center;
   width:50%;
-  margin-left:50vh;
-  margin-right:50vh;
+  margin-left:auto;
+  margin-right:auto;
   margin-bottom:15px;
 }
 
 .exerciseHeader{
   background-color:#b68fd6;
-  color:#ffddcc;
+  color:#6b3696;
   display:grid;
+  justify-content:center;
   border-radius:20px;
-  border:20px;
+  border:2px solid;
   border-color:#6b3696;
+  padding:10px;
+}
+
+.dateSelector{
+  margin:10px;
+  background-color:#957eb5;
+  color:#6b3696;
+  font-weight:bold;
+  border:2px solid #6b3696;
+  border-radius:10px;
+  padding:5px;
+  outline-color:#6b3696;
+}
+/* Modal Create Exercise Input*/
+.data-modal{
+  background-color:#b68fd6;
+  border-radius:12px;
+  border-color:#956eb5;
+  margin-left:auto;
+  margin-right:auto;
+  flex-wrap:wrap;
+  justify-content:center;
+  max-width: fit-content;
+  align-items:cetner
+}
+
+.modalBody{
+  display:flex;
+  justify-content:center;
+  /* flex-wrap:wrap; */
+}
+
+.modalBody p{
+  display:inline-flexbox;
+  color:#6b3696;
+  font-weight: bold;
+}
+.modalBody input{
+  margin-top:5px;
+  margin-bottom:0px;
+  padding-bottom:0px;
+  border-radius:10px;
+  border:2px solid;
+  outline-color:#6b3696;
+  display:block;
+  text-align: justify;
   padding:5px;
 }
+.error-valid{
+  display:inline-block;
+  color:red;
+  text-align:left;
+  font-size:16px;
+}
+
+.modalDiv{
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  position:sticky;
+  top:50vh;
+}
+/*Exercise Container and its children*/
+.exerciseContainer{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.exerciseDiv{
+  background-color:#caa7f2;
+  margin-right:20px;
+  margin-bottom:10px;
+  padding:15px;
+  border-radius:10px;
+  background-color:#b68fd6;
+  border: 2px solid #956eb5;
+}
+
 .exerciseList{
   display:flex;
   justify-content:center;
@@ -32,31 +114,16 @@ body{
   margin-left:50vh;
   margin-right:50vh;
   background:plum;
+  border-radius:15px;
+  border:solid #956eb5;
 }
 
-.data-modal{
-  background-color:plum;
-  border-radius:12px;
-  border-color:violet;
-  flex-wrap:wrap;
-  justify-content:center;
-  width:50%;
-  margin-left:50vh;
-  margin-right:50vh;
-  margin-bottom:15px;
-}
-
-.modalBody{
+.exerciseContainer{
   display:flex;
-  justify-content:center;
-  flex-wrap:wrap; 
+  position:static;
+  top: 0px;
 }
+.noExerciseTodayModal{
 
-.modalBody input{
-  margin:2px;
-  border-radius:10px;
-  outline-color:khaki;
-  
+  opacity: 1;
 }
-
-

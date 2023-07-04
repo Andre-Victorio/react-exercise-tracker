@@ -9,8 +9,23 @@ app.use(cors());
 
 mong.connect(MONG_CONNECT);
 
-app.get("/getExercises", async(req, res)=>{
-  await ExerciseModel.find({}).then((exercise)=>{
+app.get("/getExercises", (req, res)=>{
+   ExerciseModel.find().then((exercise)=>{
+    res.json(exercise);
+  }).catch((err)=>{
+    res.json(err + "retrieve Error");
+  }) 
+});
+
+app.post("/getExercisesOnDate", async(req, res)=>{
+  const date = req.body;
+  let today = new Date(date.date);
+  let toDate = new Date(date.date);
+  let tomDate = new Date(toDate.setDate(toDate.getDate() + 1));
+  await ExerciseModel.find({"date":
+    {$gt: today,
+    $lt:tomDate}}
+  ).then((exercise)=>{
     res.json(exercise);
   }).catch((err)=>{
     res.json(err + "retrieve Error");
@@ -23,7 +38,6 @@ app.post("/createExercise",async (req, res)=>{
   await newExercise.save().catch((err)=>{
     console.log(err + "create Error");
   });
-  res.json(exercise);
 })
 
 app.post("/deleteExercise",(req, res)=>{
