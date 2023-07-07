@@ -44,8 +44,8 @@ function TrackerPage(){
     });
   }
 
-  const getExerciseOnDate = (date:Date) =>{
-    if(date != undefined){
+  const getExerciseOnDate = (date:string) =>{
+    if(date!=undefined && date != ""){
       Axios.post("http://localhost:3001/getExercisesOnDate",{date:date}).then((res)=>{
         if(res.data.length==0){
           setMessageModal("There is no exercise in " + dateSelect); 
@@ -63,8 +63,8 @@ function TrackerPage(){
       })
     }else{
       setMessageModal("Date is undefined, please try again"); 
-      noExerToday.show();
       noExerToday.style.opacity = 1 as unknown as string;
+      noExerToday.show();
       Axios.get("http://localhost:3001/getExercises").then((response)=>{
         setExerciseList(response.data);
       });
@@ -147,7 +147,7 @@ function TrackerPage(){
                 setVisibleModal("flex");
           }}}/>
         <div className="dateSelectorDiv">
-          <input type="date" className="dateSelector" onChange={(e)=>{setDateSelect(e.target.value as unknown as Date)} }/>
+          <input type="date" className="dateSelector" required onChange={(e)=>{setDateSelect(e.target.value as unknown as Date)} }/>
           <CreateButton name="select" onClick={()=>{getExerciseOnDate(dateSelect as unknown as Date)}} borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5"/>
         </div>
       </div>

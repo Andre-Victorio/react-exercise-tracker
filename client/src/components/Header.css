@@ -1,0 +1,33 @@
+.headerDiv{
+  display:flex;
+  justify-self:flex-start;
+  align-items:center;
+  position:fixed;
+  top:0px;
+  left:0px;
+  right: 0px;
+  z-index: 1;
+  border-radius: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-left:10px;
+  background-color: #caa7f2;
+  border-bottom: 2px solid #6b3696;
+  max-height:10vh;
+}
+
+.headerDiv button{
+  margin-left:10px;
+  padding:10px;
+  background-color:#d07cd0;
+  border-radius:10px;
+  border-color:#6b3696;
+  font-weight:bold;
+}
+
+.headerDiv h1{
+  color:#6b3696;
+}
+
+
+
