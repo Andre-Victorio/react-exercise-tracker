@@ -11,6 +11,8 @@ function TrackerPage(){
   const [visibleModal, setVisibleModal] = useState<string>();
   const [dateSelect, setDateSelect] = useState<Date>();
   const [messageModal, setMessageModal] = useState<string>();
+  const [createOrUpdate, setCreateOrUpdate] = useState<string>();
+  const [updateID, setUpdateId] = useState<string>();
   const inputName = useRef<string>("");
   const inputSet = useRef<number>();
   const inputReps = useRef<number>();
@@ -20,24 +22,16 @@ function TrackerPage(){
     setExerciseList(response.data);
   });
   },[]);                                                        
-
+  // Updating useRefs to text box (might not be that good of a solution tbh)
+  const textToRef = (text:string, ref:any) =>{
+    ref.current = text;
+  }
+  // axios functions
   const createExercise = ()=>{
     Axios.post("http://localhost:3001/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
     })
   }        
-  const textToRef = (text:string, ref:any) =>{
-    ref.current = text;
-  }
-  const exitModal = () =>{
-    if(modal!=null){
-      event?.preventDefault();
-      modal.close();
-      setVisibleModal("none");
-      setNameError(false);
-      setSetError(false);
-      setRepsError(false);
-    }
-  }
+
   const deleteExercise = (id:string) =>{
     Axios.post("http://localhost:3001/deleteExercise",{_id:id}).then((res)=>{
       setExerciseList(exerciseList.filter((exercise)=>{return exercise._id !== id}));
@@ -71,6 +65,31 @@ function TrackerPage(){
       noExerClose();
     }
   }
+  const editExercise = (id:string) =>{
+    Axios.post("http://localhost:3001/getExerciseById",{_id:id}).then((res)=>{
+      const exerRes = res.data[0];
+      const nameBox = document.querySelector("#nameInputBox");
+      const setBox = document.querySelector("#setInputBox");
+      const repsBox = document.querySelector("#repsInputBox");
+      textToRef(exerRes.name, inputName);
+      nameBox?.setAttribute("value", exerRes.name);
+      textToRef(exerRes.set, inputSet);
+      setBox?.setAttribute("value", exerRes.set);
+      textToRef(exerRes.reps, inputReps);
+      repsBox?.setAttribute("value", exerRes.reps);
+      setUpdateId(exerRes._id);
+      setCreateOrUpdate("Update");
+      modal?.showModal();
+      setVisibleModal("flex");
+    })
+  }
+
+  const updateExercise = () => {
+    Axios.put("http://localhost:3001/editExercise", {_id:updateID, name:inputName.current, set:inputSet.current, reps: inputReps.current}).then(()=>{
+
+    })
+  }
+  // Validation Functions
   const validateName = () =>{
     return (inputName.current.length != 0)? true:  false;
   }
@@ -109,11 +128,30 @@ function TrackerPage(){
     }
     
     if (errorCount < 1){
-      createExercise();
+      if(createOrUpdate == "Create"){
+        createExercise();
+      }if(createOrUpdate == "Update"){
+        updateExercise();
+        console.log("Update Sent")
+        // event?.preventDefault();
+        // exitModal();
+      }
     }else{
      event?.preventDefault();
     }
   }
+
+  const exitModal = () =>{
+    if(modal!=null){
+      event?.preventDefault();
+      modal.close();
+      setVisibleModal("none");
+      setNameError(false);
+      setSetError(false);
+      setRepsError(false);
+    }
+  }
+
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
   const noExerToday = document.querySelector(".noExerciseTodayModal") as HTMLDialogElement;
 
@@ -143,12 +181,13 @@ function TrackerPage(){
         <h1>Exercise Tracker</h1>
         <CreateButton borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="Create an Exercise" onClick={()=>{
             if(modal!=null){
+              setCreateOrUpdate("Create");
               modal.showModal();
-                setVisibleModal("flex");
+              setVisibleModal("flex");
           }}}/>
         <div className="dateSelectorDiv">
           <input type="date" className="dateSelector" required onChange={(e)=>{setDateSelect(e.target.value as unknown as Date)} }/>
-          <CreateButton name="select" onClick={()=>{getExerciseOnDate(dateSelect as unknown as Date)}} borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5"/>
+          <CreateButton name="select" onClick={()=>{getExerciseOnDate(dateSelect as unknown as string)}} borderRadius="30px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5"/>
         </div>
       </div>
     </div>
@@ -161,7 +200,7 @@ function TrackerPage(){
               <input type="text" style={{borderColor:"red"}} placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
               <span className="error-valid">Name is not valid, please try again</span>
               </>:<>
-              <input type="text" style={{borderColor:"#6b3696"}} placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
+              <input type="text" id="nameInputBox" style={{borderColor:"#7b3696"}} placeholder="Exercise..." onChange={(e)=>{textToRef(e.target.value, inputName)}}/>
               </>}
             </p>
             <p>Sets:
@@ -169,7 +208,7 @@ function TrackerPage(){
               <input type="number" style={{borderColor:"red"}} placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
               <span className="error-valid">Number is not valid, please try again</span>
               </>:<>
-              <input type="number" style={{borderColor:"#6b3696"}} placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
+              <input type="number" id="setInputBox" style={{borderColor:"#6b3696"}} placeholder="Set..." onChange={(e)=>{textToRef(e.target.value, inputSet)}}/>
             </>}
             </p>
             <p>Reps:
@@ -177,7 +216,7 @@ function TrackerPage(){
               <input style={{borderColor:"red"}} type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
               <span className="error-valid">Number is not valid, please try again</span>
               </>:<>
-              <input style={{borderColor:"#6b3696"}} type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
+              <input style={{borderColor:"#6b3696"}} id="repsInputBox" type="number" placeholder="Reps..." onChange={(e)=>{textToRef(e.target.value, inputReps)}}/>
               </>}
             </p>
             <footer className="exitModalFooter">
@@ -205,6 +244,9 @@ function TrackerPage(){
               deleteExercise(exercise._id);
             }} />
             <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
+            <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
+              editExercise(exercise._id);
+            }} />
             </div>
           ); 
         })
