@@ -29,12 +29,12 @@ function TrackerPage(){
   }
   // axios functions
   const createExercise = ()=>{
-    Axios.post("http://localhost:3001/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
+    Axios.post("http://localhost:3001/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then(()=>{
     })
   }        
 
   const deleteExercise = (id:string) =>{
-    Axios.post("http://localhost:3001/deleteExercise",{_id:id}).then((res)=>{
+    Axios.post("http://localhost:3001/deleteExercise",{_id:id}).then(()=>{
       setExerciseList(exerciseList.filter((exercise)=>{return exercise._id !== id}));
     });
   }
@@ -134,8 +134,6 @@ function TrackerPage(){
       }if(createOrUpdate == "Update"){
         updateExercise();
         console.log("Update Sent")
-        // event?.preventDefault();
-        // exitModal();
       }
     }else{
      event?.preventDefault();
