@@ -244,9 +244,9 @@ function TrackerPage(){
             <p>Are you sure you want to delete this entry?</p>
               <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="right" name="Delete" onClick={()=>{
               deleteExercise(deleteID as unknown as string);
+              deletionModal.close();
             }}/>
               <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="left" name="Close" onClick={()=>{
-
               event?.preventDefault();
               deletionModal.close();
             }}/>
@@ -260,7 +260,6 @@ function TrackerPage(){
             return(
             <div key={exercise._id} className="exerciseDiv">
             <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
-              // deleteExercise(exercise._id);
               openDeletionModal(exercise._id);
             }} />
             <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
