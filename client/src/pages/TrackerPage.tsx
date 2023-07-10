@@ -233,6 +233,12 @@ function TrackerPage(){
             <p>{messageModal}</p>
         </dialog>
       </div>
+        <div>
+          <dialog>
+            <p>Are you sure you want to delete this entry?</p>
+              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="right" name="Add Entry" onClick={validateForm}/>
+          </dialog>
+        </div>
     </div>
     <div className="exerciseContainer">
       <div className="exerciseList">
