@@ -13,6 +13,7 @@ function TrackerPage(){
   const [messageModal, setMessageModal] = useState<string>();
   const [createOrUpdate, setCreateOrUpdate] = useState<string>();
   const [updateID, setUpdateId] = useState<string>();
+  const [deleteID, setDeleteId] = useState<string>();
   const inputName = useRef<string>("");
   const inputSet = useRef<number>();
   const inputReps = useRef<number>();
@@ -152,9 +153,12 @@ function TrackerPage(){
     }
   }
 
+  // Modal Declaration
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
   const noExerToday = document.querySelector(".noExerciseTodayModal") as HTMLDialogElement;
+  const deletionModal = document.getElementById("deleteConfirmationModal") as HTMLDialogElement; 
 
+  // Modal Functions
   const noExerClose = () =>{
     setTimeout(()=>{
       const fadeInterval = setInterval(()=>{
@@ -174,6 +178,10 @@ function TrackerPage(){
     }
   }
 
+  const openDeletionModal = (id:string) =>{
+    setDeleteId(id);
+    deletionModal.showModal();
+  }
   return(
   <>
     <div className="appHeader">
@@ -234,9 +242,16 @@ function TrackerPage(){
         </dialog>
       </div>
         <div>
-          <dialog>
+          <dialog id="deleteConfirmationModal">
             <p>Are you sure you want to delete this entry?</p>
-              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="right" name="Add Entry" onClick={validateForm}/>
+              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="right" name="Delete" onClick={()=>{
+              deleteExercise(deleteID as unknown as string);
+            }}/>
+              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="left" name="Close" onClick={()=>{
+
+              event?.preventDefault();
+              deletionModal.close();
+            }}/>
           </dialog>
         </div>
     </div>
@@ -247,7 +262,8 @@ function TrackerPage(){
             return(
             <div key={exercise._id} className="exerciseDiv">
             <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
-              deleteExercise(exercise._id);
+              // deleteExercise(exercise._id);
+              openDeletionModal(exercise._id);
             }} />
             <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
             <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
