@@ -51,12 +51,12 @@ app.post("/deleteExercise",(req, res)=>{
     });
   }
 })
-app.put("/editExercise", (req, res)=>{
+app.put("/editExercise", async(req, res)=>{
   const reqBody = req.body;
-  ExerciseModel.updateOne({"_id":reqBody._id}, {set:reqBody.set, name:reqBody.name, reps:reqBody.reps}).then(()=>{
+  await ExerciseModel.updateOne({"_id":reqBody._id}, {set:reqBody.set, name:reqBody.name, reps:reqBody.reps}).then(()=>{
     console.log("Entry Updated");
   }).catch((err)=>{
-      console.log(err);
+    console.log(err);
   })
 })
 
