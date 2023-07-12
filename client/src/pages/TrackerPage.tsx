@@ -26,7 +26,7 @@ function TrackerPage(){
 
   const fetchData = async () =>{
     setLoading(true);
-    await Axios.get("http://localhost:3001/getExercises").then((response)=>{
+    await Axios.get("https://exercise-tracker-x05u.onrender.com/getExercises").then((response)=>{
       setExerciseList(response.data);
     });
     setLoading(false);
@@ -37,19 +37,19 @@ function TrackerPage(){
   }
   // axios functions
   const createExercise = ()=>{
-    Axios.post("http://localhost:3001/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then(()=>{
+    Axios.post("https://exercise-tracker-x05u.onrender.com/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then(()=>{
     })
   }        
 
   const deleteExercise = (id:string) =>{
-    Axios.post("http://localhost:3001/deleteExercise",{_id:id}).then(()=>{
+    Axios.post("https://exercise-tracker-x05u.onrender.com/deleteExercise",{_id:id}).then(()=>{
       setExerciseList(exerciseList.filter((exercise)=>{return exercise._id !== id}));
     });
   }
 
   const getExerciseOnDate = (date:string) =>{
     if(date!=undefined && date != ""){
-      Axios.post("http://localhost:3001/getExercisesOnDate",{date:date}).then((res)=>{
+      Axios.post("https://exercise-tracker-x05u.onrender.com/getExercisesOnDate",{date:date}).then((res)=>{
         if(res.data.length==0){
           setMessageModal("There is no exercise in " + dateSelect); 
           noExerToday.show();
@@ -71,7 +71,7 @@ function TrackerPage(){
     }
   }
   const editExercise = (id:string) =>{
-    Axios.post("http://localhost:3001/getExerciseById",{_id:id}).then((res)=>{
+    Axios.post("https://exercise-tracker-x05u.onrender.com/getExerciseById",{_id:id}).then((res)=>{
       const exerRes = res.data[0];
       const nameBox = document.querySelector("#nameInputBox");
       const setBox = document.querySelector("#setInputBox");
@@ -90,7 +90,7 @@ function TrackerPage(){
   }
 
   const updateExercise = () => {
-    Axios.put("http://localhost:3001/editExercise", {_id:updateID, name:inputName.current, set:inputSet.current, reps: inputReps.current}).then(()=>{
+    Axios.put("https://exercise-tracker-x05u.onrender.com/editExercise", {_id:updateID, name:inputName.current, set:inputSet.current, reps: inputReps.current}).then(()=>{
 
     })
   }
