@@ -51,7 +51,23 @@ app.post("/deleteExercise",(req, res)=>{
     });
   }
 })
+app.put("/editExercise", (req, res)=>{
+  const reqBody = req.body;
+  ExerciseModel.updateOne({"_id":reqBody._id}, {set:reqBody.set, name:reqBody.name, reps:reqBody.reps}).then(()=>{
+    console.log("Entry Updated");
+  }).catch((err)=>{
+      console.log(err);
+  })
+})
 
+app.post("/getExerciseById", (req, res)=>{
+  const toFind = req.body;
+  ExerciseModel.find({"_id":toFind._id}).then((result)=>{
+    res.json(result);
+  }).catch((err)=>{
+      console.log(err);
+  })
+})
 
 app.listen(3001, ()=>{
   console.log("SERVER IS OPEN!");
