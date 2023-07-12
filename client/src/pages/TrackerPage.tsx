@@ -3,6 +3,7 @@ import { useState, useEffect, useRef,} from "react";
 import Axios from 'axios'
 import ExerciseDisplay from "../components/ExerciseDisplay.tsx";
 import CreateButton from "../components/CreateButton.tsx"
+import { RingLoader } from "react-spinners";
 function TrackerPage(){
   const [exerciseList, setExerciseList] = useState<any[]>([]);
   const [nameError, setNameError] = useState<boolean>();
@@ -13,27 +14,35 @@ function TrackerPage(){
   const [messageModal, setMessageModal] = useState<string>();
   const [createOrUpdate, setCreateOrUpdate] = useState<string>();
   const [updateID, setUpdateId] = useState<string>();
+  const [deleteID, setDeleteId] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
   const inputName = useRef<string>("");
   const inputSet = useRef<number>();
   const inputReps = useRef<number>();
 
   useEffect(()=>{
-  Axios.get("https://exercise-tracker-x05u.onrender.com/getExercises").then((response)=>{
-    setExerciseList(response.data);
-  });
+    fetchData();
   },[]);                                                        
+
+  const fetchData = async () =>{
+    setLoading(true);
+    await Axios.get("https://exercise-tracker-x05u.onrender.com/getExercises").then((response)=>{
+      setExerciseList(response.data);
+    });
+    setLoading(false);
+  }
   // Updating useRefs to text box (might not be that good of a solution tbh)
   const textToRef = (text:string, ref:any) =>{
     ref.current = text;
   }
   // axios functions
   const createExercise = ()=>{
-    Axios.post("https://exercise-tracker-x05u.onrender.com/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
+    Axios.post("https://exercise-tracker-x05u.onrender.com/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then(()=>{
     })
   }        
 
   const deleteExercise = (id:string) =>{
-    Axios.post("https://exercise-tracker-x05u.onrender.com/deleteExercise",{_id:id}).then((res)=>{
+    Axios.post("https://exercise-tracker-x05u.onrender.com/deleteExercise",{_id:id}).then(()=>{
       setExerciseList(exerciseList.filter((exercise)=>{return exercise._id !== id}));
     });
   }
@@ -45,9 +54,7 @@ function TrackerPage(){
           setMessageModal("There is no exercise in " + dateSelect); 
           noExerToday.show();
           noExerToday.style.opacity = 1 as unknown as string;
-          Axios.get("https://exercise-tracker-x05u.onrender.com/getExercises").then((response)=>{
-              setExerciseList(response.data);
-          });
+          fetchData();
           noExerClose();
         }else{
           setExerciseList(res.data);
@@ -59,14 +66,12 @@ function TrackerPage(){
       setMessageModal("Date is undefined, please try again"); 
       noExerToday.style.opacity = 1 as unknown as string;
       noExerToday.show();
-      Axios.get("https://exercise-tracker-x05u.onrender.com/getExercises").then((response)=>{
-        setExerciseList(response.data);
-      });
+      fetchData();
       noExerClose();
     }
   }
   const editExercise = (id:string) =>{
-    Axios.post("https://exercise-tracker-prototype.onrender.com/getExerciseById",{_id:id}).then((res)=>{
+    Axios.post("https://exercise-tracker-x05u.onrender.com/getExerciseById",{_id:id}).then((res)=>{
       const exerRes = res.data[0];
       const nameBox = document.querySelector("#nameInputBox");
       const setBox = document.querySelector("#setInputBox");
@@ -133,15 +138,13 @@ function TrackerPage(){
       }if(createOrUpdate == "Update"){
         updateExercise();
         console.log("Update Sent")
-        // event?.preventDefault();
-        // exitModal();
       }
     }else{
      event?.preventDefault();
     }
   }
 
-  const exitModal = () =>{
+  const exitCreationModal = () =>{
     if(modal!=null){
       event?.preventDefault();
       modal.close();
@@ -152,9 +155,12 @@ function TrackerPage(){
     }
   }
 
+  // Modal Declaration
   const modal = document.querySelector("[data-modal]") as HTMLDialogElement | null;
   const noExerToday = document.querySelector(".noExerciseTodayModal") as HTMLDialogElement;
+  const deletionModal = document.getElementById("deleteConfirmationModal") as HTMLDialogElement; 
 
+  // Modal Functions
   const noExerClose = () =>{
     setTimeout(()=>{
       const fadeInterval = setInterval(()=>{
@@ -174,6 +180,10 @@ function TrackerPage(){
     }
   }
 
+  const openDeletionModal = (id:string) =>{
+    setDeleteId(id);
+    deletionModal.showModal();
+  }
   return(
   <>
     <div className="appHeader">
@@ -220,7 +230,7 @@ function TrackerPage(){
               </>}
             </p>
             <footer className="exitModalFooter">
-              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="left" name="Cancel" onClick={exitModal}/>
+              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="left" name="Cancel" onClick={exitCreationModal}/>
             </footer>
             <footer className="addEntryFooter">
               <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="right" name="Add Entry" onClick={validateForm}/>
@@ -234,6 +244,19 @@ function TrackerPage(){
         </dialog>
       </div>
         <div>
+          <dialog id="deleteConfirmationModal">
+            <p>Are you sure you want to delete this entry?</p>
+              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="right" name="Delete" onClick={()=>{
+              deleteExercise(deleteID as unknown as string);
+              deletionModal.close();
+            }}/>
+              <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="left" name="Close" onClick={()=>{
+              event?.preventDefault();
+              deletionModal.close();
+            }}/>
+          </dialog>
+        </div >
+        <div>
           <dialog>
             <p>Are you sure you want to delete this entry?</p>
               <CreateButton borderRadius="10px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" floatPos="right" name="Add Entry" onClick={validateForm}/>
@@ -242,12 +265,17 @@ function TrackerPage(){
     </div>
     <div className="exerciseContainer">
       <div className="exerciseList">
+          {loading && (
+            <div>
+              <RingLoader color="#6b3696" loading={loading} size={50}/>
+            </div>
+          )}
         {
           exerciseList.map((exercise)=>{
             return(
             <div key={exercise._id} className="exerciseDiv">
             <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
-              deleteExercise(exercise._id);
+              openDeletionModal(exercise._id);
             }} />
             <ExerciseDisplay  name={exercise.name} set={exercise.set} reps={exercise.reps} date={exercise.date} />
             <CreateButton borderRadius="20px" backgroundColor="#d07cd0" fontColor="#6b3696" borderColor="#956eb5" name="&#10006;" floatPos="right" onClick={()=>{
