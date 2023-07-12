@@ -3,6 +3,7 @@ import { useState, useEffect, useRef,} from "react";
 import Axios from 'axios'
 import ExerciseDisplay from "../components/ExerciseDisplay.tsx";
 import CreateButton from "../components/CreateButton.tsx"
+import { RingLoader } from "react-spinners";
 function TrackerPage(){
   const [exerciseList, setExerciseList] = useState<any[]>([]);
   const [nameError, setNameError] = useState<boolean>();
@@ -14,15 +15,22 @@ function TrackerPage(){
   const [createOrUpdate, setCreateOrUpdate] = useState<string>();
   const [updateID, setUpdateId] = useState<string>();
   const [deleteID, setDeleteId] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
   const inputName = useRef<string>("");
   const inputSet = useRef<number>();
   const inputReps = useRef<number>();
 
   useEffect(()=>{
-  Axios.get("http://localhost:3001/getExercises").then((response)=>{
-    setExerciseList(response.data);
-  });
+    fetchData();
   },[]);                                                        
+
+  const fetchData = async () =>{
+    setLoading(true);
+    await Axios.get("http://localhost:3001/getExercises").then((response)=>{
+      setExerciseList(response.data);
+    });
+    setLoading(false);
+  }
   // Updating useRefs to text box (might not be that good of a solution tbh)
   const textToRef = (text:string, ref:any) =>{
     ref.current = text;
@@ -46,9 +54,7 @@ function TrackerPage(){
           setMessageModal("There is no exercise in " + dateSelect); 
           noExerToday.show();
           noExerToday.style.opacity = 1 as unknown as string;
-          Axios.get("http://localhost:3001/getExercises").then((response)=>{
-              setExerciseList(response.data);
-          });
+          fetchData();
           noExerClose();
         }else{
           setExerciseList(res.data);
@@ -60,9 +66,7 @@ function TrackerPage(){
       setMessageModal("Date is undefined, please try again"); 
       noExerToday.style.opacity = 1 as unknown as string;
       noExerToday.show();
-      Axios.get("http://localhost:3001/getExercises").then((response)=>{
-        setExerciseList(response.data);
-      });
+      fetchData();
       noExerClose();
     }
   }
@@ -251,10 +255,15 @@ function TrackerPage(){
               deletionModal.close();
             }}/>
           </dialog>
-        </div>
+        </div >
     </div>
     <div className="exerciseContainer">
       <div className="exerciseList">
+          {loading && (
+            <div>
+              <RingLoader color="#6b3696" loading={loading} size={50}/>
+            </div>
+          )}
         {
           exerciseList.map((exercise)=>{
             return(
