@@ -18,7 +18,7 @@ function TrackerPage(){
   const inputReps = useRef<number>();
 
   useEffect(()=>{
-  Axios.get("http://localhost:3001/getExercises").then((response)=>{
+  Axios.get("https://exercise-tracker-prototype.onrender.com/getExercises").then((response)=>{
     setExerciseList(response.data);
   });
   },[]);                                                        
@@ -28,7 +28,7 @@ function TrackerPage(){
   }
   // axios functions
   const createExercise = ()=>{
-    Axios.post("http://localhost:3001/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
+    Axios.post("https://exercise-tracker-prototype.onrender.com/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
     })
   }        
 
@@ -45,7 +45,7 @@ function TrackerPage(){
           setMessageModal("There is no exercise in " + dateSelect); 
           noExerToday.show();
           noExerToday.style.opacity = 1 as unknown as string;
-          Axios.get("http://localhost:3001/getExercises").then((response)=>{
+          Axios.get("https://exercise-tracker-prototype.onrender.com/getExercises").then((response)=>{
               setExerciseList(response.data);
           });
           noExerClose();
@@ -59,14 +59,14 @@ function TrackerPage(){
       setMessageModal("Date is undefined, please try again"); 
       noExerToday.style.opacity = 1 as unknown as string;
       noExerToday.show();
-      Axios.get("http://localhost:3001/getExercises").then((response)=>{
+      Axios.get("https://exercise-tracker-prototype.onrender.com/getExercises").then((response)=>{
         setExerciseList(response.data);
       });
       noExerClose();
     }
   }
   const editExercise = (id:string) =>{
-    Axios.post("http://localhost:3001/getExerciseById",{_id:id}).then((res)=>{
+    Axios.post("https://exercise-tracker-prototype.onrender.com/getExerciseById",{_id:id}).then((res)=>{
       const exerRes = res.data[0];
       const nameBox = document.querySelector("#nameInputBox");
       const setBox = document.querySelector("#setInputBox");
@@ -85,7 +85,7 @@ function TrackerPage(){
   }
 
   const updateExercise = () => {
-    Axios.put("http://localhost:3001/editExercise", {_id:updateID, name:inputName.current, set:inputSet.current, reps: inputReps.current}).then(()=>{
+    Axios.put("https://exercise-tracker-prototype.onrender.com/editExercise", {_id:updateID, name:inputName.current, set:inputSet.current, reps: inputReps.current}).then(()=>{
 
     })
   }
