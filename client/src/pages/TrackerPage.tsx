@@ -18,7 +18,7 @@ function TrackerPage(){
   const inputReps = useRef<number>();
 
   useEffect(()=>{
-  Axios.get("https://exercise-tracker-prototype.onrender.com/getExercises").then((response)=>{
+  Axios.get("https://exercise-tracker-x05u.onrender.com/getExercises").then((response)=>{
     setExerciseList(response.data);
   });
   },[]);                                                        
@@ -28,24 +28,24 @@ function TrackerPage(){
   }
   // axios functions
   const createExercise = ()=>{
-    Axios.post("https://exercise-tracker-prototype.onrender.com/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
+    Axios.post("https://exercise-tracker-x05u.onrender.com/createExercise",{name: inputName.current, set: inputSet.current as unknown as number, reps:inputReps.current as unknown as number, date:new Date()}).then((res)=>{
     })
   }        
 
   const deleteExercise = (id:string) =>{
-    Axios.post("http://localhost:3001/deleteExercise",{_id:id}).then((res)=>{
+    Axios.post("https://exercise-tracker-x05u.onrender.com/deleteExercise",{_id:id}).then((res)=>{
       setExerciseList(exerciseList.filter((exercise)=>{return exercise._id !== id}));
     });
   }
 
   const getExerciseOnDate = (date:string) =>{
     if(date!=undefined && date != ""){
-      Axios.post("http://localhost:3001/getExercisesOnDate",{date:date}).then((res)=>{
+      Axios.post("https://exercise-tracker-x05u.onrender.com/getExercisesOnDate",{date:date}).then((res)=>{
         if(res.data.length==0){
           setMessageModal("There is no exercise in " + dateSelect); 
           noExerToday.show();
           noExerToday.style.opacity = 1 as unknown as string;
-          Axios.get("https://exercise-tracker-prototype.onrender.com/getExercises").then((response)=>{
+          Axios.get("https://exercise-tracker-x05u.onrender.com/getExercises").then((response)=>{
               setExerciseList(response.data);
           });
           noExerClose();
@@ -59,7 +59,7 @@ function TrackerPage(){
       setMessageModal("Date is undefined, please try again"); 
       noExerToday.style.opacity = 1 as unknown as string;
       noExerToday.show();
-      Axios.get("https://exercise-tracker-prototype.onrender.com/getExercises").then((response)=>{
+      Axios.get("https://exercise-tracker-x05u.onrender.com/getExercises").then((response)=>{
         setExerciseList(response.data);
       });
       noExerClose();
@@ -85,7 +85,7 @@ function TrackerPage(){
   }
 
   const updateExercise = () => {
-    Axios.put("https://exercise-tracker-prototype.onrender.com/editExercise", {_id:updateID, name:inputName.current, set:inputSet.current, reps: inputReps.current}).then(()=>{
+    Axios.put("https://exercise-tracker-x05u.onrender.com/editExercise", {_id:updateID, name:inputName.current, set:inputSet.current, reps: inputReps.current}).then(()=>{
 
     })
   }
