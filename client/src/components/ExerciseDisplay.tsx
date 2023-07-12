@@ -13,7 +13,7 @@ const ExerciseDisplay = ({name, set, reps, date}:Props) =>{
         <h3>Exercise: {name}</h3>
         <h3>Sets: {set}</h3>
         <h3>Reps: {reps}</h3>
-        <h3>Date: {date.split('T').shift()}</h3>
+        <h3>Date: {date.toString().split('T').shift()}</h3>
     </>
   )
 }
