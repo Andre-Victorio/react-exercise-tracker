@@ -70,8 +70,8 @@ function TrackerPage(){
       noExerClose();
     }
   }
-  const editExercise = (id:string) =>{
-    Axios.post("https://exercise-tracker-x05u.onrender.com/getExerciseById",{_id:id}).then((res)=>{
+  const editExercise = async (id:string) =>{
+    await Axios.post("https://exercise-tracker-x05u.onrender.com/getExerciseById",{_id:id}).then((res)=>{
       const exerRes = res.data[0];
       const nameBox = document.querySelector("#nameInputBox");
       const setBox = document.querySelector("#setInputBox");
